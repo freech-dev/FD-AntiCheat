@@ -1,6 +1,6 @@
 AddEventHandler('explosionEvent', function(sender, ev)
     local isExplosionBlacklisted = false
-    for _, blacklistedExplosion in ipairs(config.blacklists.explosions) do
+    for _, blacklistedExplosion in ipairs(Config.blacklists.explosions) do
         if ev.explosionType == blacklistedExplosion then
             isExplosionBlacklisted = true
             break
@@ -71,3 +71,25 @@ function sendToDisc(title, message, footer)
     PerformHttpRequest(webhookURL, 
     function(err, text, headers) end, 'POST', json.encode({username = name, embeds = embed}), { ['Content-Type'] = 'application/json' })
 end
+
+function DoesPlayerHasBlacklistWeapon(id)
+    for i, weapon in ipairs(config.blacklists.weapons) do
+        local hash = GetHashKey(weapon)
+        local ped = GetPlayerPed(id)
+
+        RemoveWeaponFromPed(ped, hash)
+    end
+end
+
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(500)
+        local players = GetPlayers()
+        for _, id in ipairs(players) do
+            DoesPlayerSitInBlacklistVehicle(id)
+            DoesPlayerHasBlacklistPed(id)
+            DoesPlayerHasBlacklistWeapon(id)
+        end
+    end
+end)
