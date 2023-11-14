@@ -1,15 +1,9 @@
-AddEventHandler('explosionEvent', function(sender, ev)
-    local isExplosionBlacklisted = false
+AddEventHandler("explosionEvent", function(sender, ev)
     for _, blacklistedExplosion in ipairs(Config.blacklists.explosions) do
-        if ev.explosionType == blacklistedExplosion then
-            isExplosionBlacklisted = true
-            break
+        if blacklistedExplosion[ev.explosionType] then
+            CancelEvent()
+            return
         end
-    end
-
-    if isExplosionBlacklisted then
-        DropPlayer(sender, "[FD AC] You have triggered a blacklisted explosion.")
-        CancelEvent()
     end
 end)
 

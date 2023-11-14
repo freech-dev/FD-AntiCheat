@@ -1,6 +1,6 @@
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(500)
+        Citizen.Wait(1000)
 
         local ped = PlayerPedId()
         local veh = nil
