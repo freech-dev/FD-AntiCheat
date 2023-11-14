@@ -4,15 +4,25 @@ Config.blacklists = {
     explosions = { -- Get explosion names from https://altv.stuyk.com/docs/articles/tables/explosions.html
         "EXPLOSION_GRENADE",
         "EXPLOSION_STICKYBOMB",
-        "EXPLOSION_MOLOTOV",
+        "EXPLOSION_MOLOTOV"
     },
     
     weapons = {
-
+        "EXPLOSION_GRENADE",
+        "EXPLOSION_STICKYBOMB",
+        "EXPLOSION_MOLOTOV"
     },
 
     vehicles = {
+        "asbo",
+        "baller",
+        "police"
+    },
 
+    peds = {
+        "a_f_m_beach_01",
+        "a_f_o_soucent_01",
+        "a_f_y_bevhills_01"
     },
 }
 
