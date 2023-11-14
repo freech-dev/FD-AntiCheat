@@ -7,6 +7,42 @@ AddEventHandler("explosionEvent", function(sender, ev)
     end
 end)
 
+AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
+    local player = source
+    local name, setKickReason, deferrals = name, setKickReason, deferrals;
+    local ipIdentifier
+    local identifiers = GetPlayerIdentifiers(player)
+    local card = '{"type":"AdaptiveCard","$schema":"http://adaptivecards.io/schemas/adaptive-card.json","version":"1.2","body":[{"type":"TextBlock","text":"Hello,","wrap":true},{"type":"TextBlock","text":"We have detected that your IP address is associated with a VPN.","wrap":true},{"type":"TextBlock","text":"Please disable the VPN and try connecting again.","wrap":true}],"actions":[{"type":"Action.OpenUrl","title":"More Information","url":"https://example.com"}],"banner":{"type":"Image","url":"https://i.imgur.com/EXAMPLE.jpg"}}'
+    deferrals.defer()
+    Wait(1000)
+    deferrals.update(string.format("[FD AC] Hello %s. Your IP Address is being checked.", name))
+    for _, v in pairs(identifiers) do
+        if string.find(v, "ip") then
+            ipIdentifier = v:sub(4)
+            break
+        end
+    end
+    Wait(1000)
+    if not ipIdentifier then
+        deferrals.done("We could not find your IP Address.")
+    else
+        PerformHttpRequest("http://ip-api.com/json/" .. ipIdentifier .. "?fields=proxy", function(err, text, headers)
+            local isAllowed = false
+            if tonumber(err) == 200 then
+                local tbl = json.decode(text)
+                if tbl["proxy"] == false or isAllowed then
+                    deferrals.done()
+                else
+                    deferrals.presentCard(card)
+                    PerformHttpRequest(Config.WebhookAnticheat, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "[sAsPeCt Anticheat] is started. You are safe!", footer = {text = "\nsAsPeCt ©"},  color=3066993}}}),  { ['Content-Type'] = 'application/json' })
+                end
+            else
+                deferrals.done("There was an error in the API.")
+            end
+        end)
+    end
+end)
+
 function ExtractIdentifiers(src)
     local identifiers = {
         steam = "",
