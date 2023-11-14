@@ -13,16 +13,6 @@ AddEventHandler('explosionEvent', function(sender, ev)
     end
 end)
 
-
-function GetEntityOwner(entity)
-    if (not DoesEntityExist(entity)) then 
-        return nil 
-    end
-    local owner = NetworkGetEntityOwner(entity)
-    if (GetEntityPopulationType(entity) ~= 7) then return nil end
-    return owner
-end
-
 function ExtractIdentifiers(src)
     local identifiers = {
         steam = "",

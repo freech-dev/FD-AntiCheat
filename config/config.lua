@@ -8,9 +8,9 @@ Config.blacklists = {
     },
     
     weapons = {
-        "EXPLOSION_GRENADE",
-        "EXPLOSION_STICKYBOMB",
-        "EXPLOSION_MOLOTOV"
+        "WEAPON_RPG",
+        "WEAPON_RAILGUN",
+        "WEAPON_FIREWORK"
     },
 
     vehicles = {

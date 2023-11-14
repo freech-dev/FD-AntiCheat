@@ -21,15 +21,23 @@ Citizen.CreateThread(function()
                     local vehicleName = GetDisplayNameFromVehicleModel(model)
                     local title = "Vehicle Deleted"
                     local message = playerName .. " spawned a blacklisted vehicle with the spawncode " .. vehicleName
-                    local footer = "[FD AC] Vehicle Blacklist "
+                    local footer = "[FD AC] Vehicle Blacklist"
                     TriggerServerEvent("sendToDisc", title, message, footer)
                     DeleteEntity(veh)
                     ClearPedTasksImmediately(ped)
                 end
             end
         end
+
+        for _, restrictedWeapon in ipairs(Config.blacklists.weapons) do
+            local weapon = GetHashKey(restrictedWeapon)
+            if HasPedGotWeapon(ped, weapon, false) or HasPedGotWeaponComponent(ped, weapon, false) then
+                RemoveWeaponFromPed(ped, weapon)
+            end
+        end
     end
 end)
+
 
 function IsVehicleModelInConfigBlacklist(model)
     for _, vehicleModel in ipairs(Config.blacklists.vehicles) do
