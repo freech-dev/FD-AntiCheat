@@ -73,7 +73,7 @@ function sendToDisc(title, message, footer)
 end
 
 function DoesPlayerHasBlacklistWeapon(id)
-    for i, weapon in ipairs(config.blacklists.weapons) do
+    for i, weapon in ipairs(Config.blacklists.weapons) do
         local hash = GetHashKey(weapon)
         local ped = GetPlayerPed(id)
         RemoveWeaponFromPed(ped, hash)
