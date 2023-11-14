@@ -86,7 +86,7 @@ function DoesPlayerHasBlacklistPed(id)
     for _, pedModel in ipairs(Config.blacklists.peds) do
         local hash = GetHashKey(pedModel)
         if plped == hash then
-            TriggerServerEvent("FDAC:Blacklists:ChangePed", id)
+            TriggerClientEvent("FDAC:Blacklists:ChangePed", id)
             TriggerClientEvent("chatMessage", ped, "[FD AC]", {255, 0, 0}, "You cannot use this ped as it is blacklisted")
         end
     end
@@ -103,7 +103,7 @@ function DoesPlayerSitInBlacklistVehicle(id)
         local blvehicle = GetHashKey(vehicle)
         if plmodel == blvehicle then
             local Nid = NetworkGetNetworkIdFromEntity(plvehicle)
-            TriggerServerEvent("FDAC:Blacklists:LeaveVehicle", id, Nid)
+            TriggerClientEvent("FDAC:Blacklists:LeaveVehicle", id, Nid)
             TriggerClientEvent("chatMessage", ped, "[FD AC]", {255, 0, 0}, "You cannot use this vehicle as it is blacklisted")
         end
     end
