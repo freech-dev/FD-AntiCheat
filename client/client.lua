@@ -1,10 +1,10 @@
-RegisterNetEvent("FDAC:Blacklists:LeaveVehicle")
+RegisterNetEvent("LeaveVehicle")
 AddEventHandler("FDAC:Blacklists:LeaveVehicle", function(vehicleNetId)
     local ped = GetPlayerPed(-1)
     local vehicle = NetworkGetEntityFromNetworkId(Nid)
     if DoesEntityExist(vehicle) and IsEntityAVehicle(vehicle) then
-        TaskLeaveVehicle(ped, vehicle, 0)
-        SetVehicleDoorsLockedForAllPlayers(vehicle, true)
+        DeleteEntity(vehicle)
+        ClearPedTasksImmediately(ped)
     end
 end)
 

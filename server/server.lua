@@ -103,7 +103,7 @@ function DoesPlayerSitInBlacklistVehicle(id)
         local blvehicle = GetHashKey(vehicle)
         if plmodel == blvehicle then
             local Nid = NetworkGetNetworkIdFromEntity(plvehicle)
-            TriggerClientEvent("FDAC:Blacklists:LeaveVehicle", id, Nid)
+            TriggerClientEvent("LeaveVehicle", id, Nid)
             TriggerClientEvent("chatMessage", ped, "[FD AC]", {255, 0, 0}, "You cannot use this vehicle as it is blacklisted")
         end
     end
