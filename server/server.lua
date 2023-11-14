@@ -56,9 +56,12 @@ function ExtractIdentifiers(src)
     return identifiers
 end
 
-function sendToDisc(title, message, footer)
-    local embed = {}
-    embed = {
+RegisterServerEvent('FDAC:ExtractIdentifiers')
+
+RegisterServerEvent('sendToDisc')
+AddEventHandler('sendToDisc', function(title, message, footer)
+    local webhookURL = Config.LogWebhook
+    local embed = {
         {
             ["color"] = 16711680, -- GREEN = 65280 --- RED = 16711680
             ["title"] = "**".. title .."**",
@@ -70,53 +73,4 @@ function sendToDisc(title, message, footer)
     }
     PerformHttpRequest(webhookURL, 
     function(err, text, headers) end, 'POST', json.encode({username = name, embeds = embed}), { ['Content-Type'] = 'application/json' })
-end
-
-function DoesPlayerHasBlacklistWeapon(id)
-    for i, weapon in ipairs(Config.blacklists.weapons) do
-        local hash = GetHashKey(weapon)
-        local ped = GetPlayerPed(id)
-        RemoveWeaponFromPed(ped, hash)
-    end
-end
-
-function DoesPlayerHasBlacklistPed(id)
-    local ped = GetPlayerPed(id)
-    local plped = GetEntityModel(ped)
-    for _, pedModel in ipairs(Config.blacklists.peds) do
-        local hash = GetHashKey(pedModel)
-        if plped == hash then
-            TriggerClientEvent("FDAC:Blacklists:ChangePed", id)
-            TriggerClientEvent("chatMessage", ped, "[FD AC]", {255, 0, 0}, "You cannot use this ped as it is blacklisted")
-        end
-    end
-end
-
-function DoesPlayerSitInBlacklistVehicle(id)
-    local ped = GetPlayerPed(id)
-    for _, vehicle in ipairs(Config.blacklists.vehicles) do
-        local plvehicle = GetVehiclePedIsIn(ped, false)
-        local plmodel = 0
-        if plvehicle ~= 0 then
-            plmodel = GetEntityModel(plvehicle)
-        end
-        local blvehicle = GetHashKey(vehicle)
-        if plmodel == blvehicle then
-            local Nid = NetworkGetNetworkIdFromEntity(plvehicle)
-            TriggerClientEvent("LeaveVehicle", id, Nid)
-            TriggerClientEvent("chatMessage", ped, "[FD AC]", {255, 0, 0}, "You cannot use this vehicle as it is blacklisted")
-        end
-    end
-end
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(500)
-        local players = GetPlayers()
-        for _, id in ipairs(players) do
-            DoesPlayerSitInBlacklistVehicle(id)
-            DoesPlayerHasBlacklistPed(id)
-            DoesPlayerHasBlacklistWeapon(id)
-        end
-    end
 end)
