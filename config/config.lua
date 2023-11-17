@@ -2,6 +2,8 @@ Config = {}
 
 Config.LogWebhook = "https://discord.com/api/webhooks/1172271210562863214/5KZ_xlB5mOcrEBsIZCqOk0laWtduB0-T9mi5O-5x12DLdyEmy-IVeC-2xDBkxGiayauE"
 
+Config.bypass = "fd-ac.bypass"
+
 Config.blacklists = {
     explosions = { -- Get explosion names from https://altv.stuyk.com/docs/articles/tables/explosions.html
         "EXPLOSION_GRENADE",

@@ -12,6 +12,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
     local name, setKickReason, deferrals = name, setKickReason, deferrals;
     local ipIdentifier
     local identifiers = GetPlayerIdentifiers(player)
+    local acePerm = Config.bypass
     local card = '{"type":"AdaptiveCard","$schema":"http://adaptivecards.io/schemas/adaptive-card.json","version":"1.2","body":[{"type":"TextBlock","text":"Hello,","wrap":true},{"type":"TextBlock","text":"We have detected that your IP address is associated with a VPN.","wrap":true},{"type":"TextBlock","text":"Please disable the VPN and try connecting again.","wrap":true}],"actions":[{"type":"Action.OpenUrl","title":"More Information","url":"https://example.com"}],"banner":{"type":"Image","url":"https://i.imgur.com/EXAMPLE.jpg"}}'
     deferrals.defer()
     Wait(1000)
@@ -30,11 +31,10 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
             local isAllowed = false
             if tonumber(err) == 200 then
                 local tbl = json.decode(text)
-                if tbl["proxy"] == false or isAllowed then
+                if tbl["proxy"] == false or IsPlayerAceAllowed(player, acePerm) then
                     deferrals.done()
                 else
                     deferrals.presentCard(card)
-                    PerformHttpRequest(Config.WebhookAnticheat, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "[sAsPeCt Anticheat] is started. You are safe!", footer = {text = "\nsAsPeCt ©"},  color=3066993}}}),  { ['Content-Type'] = 'application/json' })
                 end
             else
                 deferrals.done("There was an error in the API.")

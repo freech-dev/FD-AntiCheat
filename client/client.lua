@@ -17,12 +17,6 @@ Citizen.CreateThread(function()
             if IsVehicleModelInConfigBlacklist(model) then
                 local driver = GetPedInVehicleSeat(veh, -1)
                 if driver == ped then
-                    local playerName = GetPlayerName(PlayerId())
-                    local vehicleName = GetDisplayNameFromVehicleModel(model)
-                    local title = "Vehicle Deleted"
-                    local message = playerName .. " spawned a blacklisted vehicle with the spawncode " .. vehicleName
-                    local footer = "[FD AC] Vehicle Blacklist"
-                    TriggerServerEvent("sendToDisc", title, message, footer)
                     DeleteEntity(veh)
                     ClearPedTasksImmediately(ped)
                 end
